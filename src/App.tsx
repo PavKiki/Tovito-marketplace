@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import {Product} from './components/Product'
-import {products} from './data/products'
 import { singleCategory } from './models';
 import {singleProduct} from './models';
 import { NavPanel } from './components/NavPanel';
@@ -37,7 +36,6 @@ function App() {
       <div className="mx-auto max-w-2xl pt-5 -z-50">
         {loading && <p className="text-center">Loading...</p>}
         {axProducts?.map(singleProduct => <Product key={singleProduct.id} product={singleProduct}/>)}
-        {/* {products!.map(singleProduct => <Product product={singleProduct}/>)} */}
       </div>
     </div>
   )
