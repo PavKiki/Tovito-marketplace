@@ -9,12 +9,13 @@ interface navProps {
 
 export function NavPanel(props: navProps) {
     return (
-    <nav className='sticky top-0'>
-    <ul className="navigation-panel">
-    <li className="navigation-panel-item text-white"><Link to={'/'}>О нас</Link></li>
-    <DropdownMenu cats={props.categories}></DropdownMenu>
-    <li className="navigation-panel-item text-white"><Link to={'/'}>Профиль</Link></li>
-    </ul>
-    </nav>
+      <nav className='sticky top-0 w-full'>
+        <ul className="navigation-panel">
+          <li className="navigation-panel-item text-white"><Link to={'/about'}>О нас</Link></li>
+          <DropdownMenu cats={props.categories}></DropdownMenu>
+          <li className="navigation-panel-item text-white"><Link to={'/account'}>Профиль</Link></li>
+          <div className="navigation-panel-item-space" onClick={() => window.scroll(0,0)}><p className="npis-text">Tovito marketplace</p></div>
+        </ul>
+      </nav>
     )
 }

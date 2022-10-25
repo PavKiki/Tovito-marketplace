@@ -12,3 +12,11 @@ export interface singleProduct {
     category: singleCategory;
     images: [string, string, string];
 }
+
+export interface singleAccount {
+    id: number;
+    email: string;
+    password: string;
+    name: string;
+    role: string;
+}

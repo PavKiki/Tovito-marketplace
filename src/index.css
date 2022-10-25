@@ -18,6 +18,7 @@
     list-style: none;
     margin: 0;
     padding-left: 0;
+    z-index: 9;
 }
   
 .navigation-panel-item:hover, .navigation-panel-item:focus-within {
@@ -42,4 +43,43 @@
    visibility: visible;
    opacity: 1;
    display: block;
+}
+
+.navigation-panel-item-space {
+  padding: 1rem;
+  max-height: 80%;
+  overflow: hidden;
+  z-index: 8;
+  background: white;
+}
+
+.navigation-panel-item-space:hover {
+  transition-duration: 0.5s;
+  background-color: coral;
+}
+
+.navigation-panel-item-space:hover > .npis-text { 
+  transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -webkit-transition-duration: 0.5s;
+  color: azure;
+}
+
+.npis-text {
+  text-align: right;
+  padding-right: 5%;
+  font-family: 'Raleway',sans-serif;
+  text-transform: uppercase;
+}
+
+.profile-page {
+  background-color: aqua;
+}
+
+.entrance-window {
+  /* padding-left: 15%;
+  padding-right: 15%;
+  padding-top: 5%;
+  padding-bottom: 10%; */
 }
