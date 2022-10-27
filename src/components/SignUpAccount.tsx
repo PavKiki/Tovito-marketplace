@@ -1,5 +1,5 @@
 import React from 'react';
-import { ToMainNavPanel } from "./ToMainNavPanel"
+import { ToMainNavPanel } from "./ToMainNavPanel";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -7,6 +7,31 @@ export function SignUpAccount() {
 
     const [passCoincidence, setPassCoincidence] = React.useState(false);
     const [emailExistance, setEmailExistance] = React.useState(false);
+
+    async function checkEmail(email: string) {
+        let response: any = await axios.post('https://api.escuelajs.co/api/v1/users/is-available', 
+          {
+            email: `${email}`
+          })
+          .catch((error) => {
+            console.log(error);
+        });
+        if (!response.data.isAvailable) setEmailExistance(true);
+        else setEmailExistance(false);
+    }
+
+    async function registerUser(name: string, email: string, pass: string) {
+        let response: any = await axios.post('https://api.escuelajs.co/api/v1/users/', 
+          {
+            name: `${name}`,
+            email: `${email}`,
+            password: `${pass}`
+          })
+          .catch((error) => {
+            console.log(error);
+        });
+        console.log(response);
+    }
 
     function checkEntered(): void {
         setEmailExistance(false);
@@ -19,16 +44,12 @@ export function SignUpAccount() {
         else setPassCoincidence(false);
 
         let email: string = (document.getElementById("email") as HTMLInputElement).value;
-        axios.post('https://api.escuelajs.co/api/v1/users/is-available', {
-            email: `${email}`
-          })
-          .then((response) => {
-                if (!response.data.isAvailable) setEmailExistance(true);
-                else setEmailExistance(false);
-            })
-          .catch(function (error) {
-            console.log(error);
-          });
+        checkEmail(email);
+        if (emailExistance) return;
+
+        let name: string = (document.getElementById("user") as HTMLInputElement).value;
+        // registerUser(name, email, pass);
+        // redirect to /account
     }
 
     return (
@@ -41,8 +62,8 @@ export function SignUpAccount() {
                         <input type="text" id="user" name="user" placeholder="Имя пользователя" />
                         <input type="password" id="newPass" name="newPass" placeholder="Придумайте пароль" />
                         <input type="password" id="newPassRepeat" name="newPassRepeat" placeholder="Повторите пароль" />
-                        {passCoincidence && <p>Введенные пароли не совпадают!</p>}
-                        {emailExistance && <p>Пользователь с данной электронной почтой уже существует!</p>}
+                        {passCoincidence && <p className='text-red'>Введенные пароли не совпадают!</p>}
+                        {emailExistance && <p className='text-red'>Пользователь с данной электронной почтой уже существует!</p>}
                         <p><Link to="/account">У меня уже есть аккаунт</Link></p>
                         <button type="submit" onClick={() => checkEntered()}>&#9998;</button>
                     </form>
