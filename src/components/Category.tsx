@@ -3,6 +3,7 @@ import {Product} from "./Product";
 import React from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { ToMainNavPanel } from "./ToMainNavPanel";
 
 
 export function Category() {
@@ -23,6 +24,7 @@ export function Category() {
 
     return (
     <div className="category">
+        <ToMainNavPanel/>
         <div className="mx-auto max-w-2xl pt-5 -z-50">
             {loading && <p className="text-center">Loading...</p>}
             {axProducts?.map(singleProduct => <Product key={singleProduct.id} product={singleProduct}/>)}
