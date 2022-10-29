@@ -25,7 +25,8 @@ export function SignUpAccount() {
           {
             name: `${name}`,
             email: `${email}`,
-            password: `${pass}`
+            password: `${pass}`,
+            avatar: "https://google.ru"
           })
           .catch((error) => {
             console.log(error);
@@ -48,7 +49,7 @@ export function SignUpAccount() {
         if (emailExistance) return;
 
         let name: string = (document.getElementById("user") as HTMLInputElement).value;
-        // registerUser(name, email, pass);
+        registerUser(name, email, pass);
         // redirect to /account
     }
 

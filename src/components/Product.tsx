@@ -32,7 +32,7 @@ export function Product(props: productProps) {
             <p>{props.product.description}</p>
             <p>Price: <strong>{props.product.price}</strong> rubles</p>
             <p className='text-left'>Category: <b>{props.product.category.name}</b></p>
-            <p><img className='text-right' width="128" src={props.product.category.image}></img></p>
+            <p><img className='category-image' width="128" src={props.product.category.image}></img></p>
         </div>
     )
 }
