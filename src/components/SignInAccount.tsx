@@ -36,12 +36,12 @@ export function SignInAccount() {
             <ToMainNavPanel></ToMainNavPanel>
             <div className='entrance-window'>
                 <div id="wrapper">
-                    <form id="signin" method="" action="" onSubmit={(e) => e.preventDefault()}>
+                    <form className='before:top-11' id="signin" method="" action="" onSubmit={(e) => e.preventDefault()}>
                         <input type="text" id="user" name="user" placeholder="Имя пользователя" />
                         <input type="password" id="pass" name="pass" placeholder="Пароль" />
-                        <button type="submit" onClick={() => enterProfile()}>&#9998;</button>
-                        {unauthorized && <p>Пароль/электронная почта введены неверно!</p>}
-                        <p><Link to="/account/sign-up">Регистрация</Link></p>
+                        <button className='top-5' type="submit" onClick={() => enterProfile()}>&#9998;</button>
+                        {unauthorized && <p className='sign-error'>Пароль/электронная почта введены неверно!</p>}
+                        <p className="sign-text"><Link className='sign-link' to="/account/sign-up">Регистрация</Link></p>
                     </form>
                 </div>
             </div>

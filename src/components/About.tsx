@@ -1,4 +1,5 @@
-import { ToMainNavPanel } from "./ToMainNavPanel"
+import { ToMainNavPanel } from "./ToMainNavPanel";
+import '../css_components/aboutpage.css';
 
 export function About() {
     return(

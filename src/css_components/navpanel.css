@@ -1,0 +1,95 @@
+
+.navigation-panel-item {
+    color: #fff;
+    background: darkorange;
+    display: block;
+    float: left;
+    padding: 1rem;
+    position: relative;
+    text-decoration: none;
+    transition-duration: 0.5s;
+}
+
+.navigation-panel {
+    background: darkorange;
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    z-index: 9;
+	display: flex;
+	width: 100%
+}
+  
+.navigation-panel-item:hover, .navigation-panel-item:focus-within {
+  background: red;
+  cursor: pointer;
+}
+
+.navigation-panel-item:focus-within a {
+  outline: none;
+}
+
+.navigation-panel-dropdown {
+  min-width: 5rem;
+  transition: all 0.5s ease;
+  margin-top: 1rem;
+}
+
+.navigation-panel-item:hover > .navigation-panel-dropdown,
+.navigation-panel-item:focus-within > .navigation-panel-dropdown,
+.navigation-panel-dropdown:hover,
+.navigation-panel-dropdown:focus {
+   visibility: visible;
+   opacity: 1;
+   display: block;
+}
+
+.navigation-panel-item-space {
+  padding: 1rem;
+  max-height: 80%;
+  overflow: hidden;
+  z-index: 8;
+  background: white;
+  width: 100%;
+}
+
+.navigation-panel-item-space:hover {
+  transition-duration: 0.5s;
+  background-color: coral;
+}
+
+/* .navpanel-main .navigation-panel .navigation-panel-item-space:hover > .navpanel-main .navpanel-divider {
+  transition-duration: 0.5s;
+  background-color: black;
+  color: black;
+} */
+
+.navigation-panel-item-space:hover > .npis-text { 
+  transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -webkit-transition-duration: 0.5s;
+  color: azure;
+}
+
+.npis-text {
+  text-align: right;
+  padding-right: 5%;
+  font-family: 'Raleway',sans-serif;
+  text-transform: uppercase;
+}
+
+.logo-navpanel {
+  max-height: 30px;
+  float: right;
+}
+
+.navigation-panel-item-space:hover > .logo-navpanel {
+  transition-duration: 0.5s;
+  filter: brightness(0.4);
+}
+
+.navpanel-divider {
+	height: 4px;
+	background-color: antiquewhite;
+}

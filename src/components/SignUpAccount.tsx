@@ -1,12 +1,14 @@
 import React from 'react';
 import { ToMainNavPanel } from "./ToMainNavPanel";
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
+import '../css_components/sign-inup-form.css';
 
 export function SignUpAccount() {
 
     const [passCoincidence, setPassCoincidence] = React.useState(false);
     const [emailExistance, setEmailExistance] = React.useState(false);
+    const [canRedirect, setCanRedirect] = React.useState(false);
 
     async function checkEmail(email: string) {
         let response: any = await axios.post('https://api.escuelajs.co/api/v1/users/is-available', 
@@ -36,8 +38,11 @@ export function SignUpAccount() {
 
     function checkEntered(): void {
         setEmailExistance(false);
+        setCanRedirect(false);
+        
         let pass: string = (document.getElementById("newPass") as HTMLInputElement).value;
         let rPass: string = (document.getElementById("newPassRepeat") as HTMLInputElement).value;
+        
         if (pass !== rPass) {
             setPassCoincidence(true);
             return;
@@ -50,7 +55,7 @@ export function SignUpAccount() {
 
         let name: string = (document.getElementById("user") as HTMLInputElement).value;
         registerUser(name, email, pass);
-        // redirect to /account
+        setCanRedirect(true);
     }
 
     return (
@@ -58,15 +63,16 @@ export function SignUpAccount() {
             <ToMainNavPanel></ToMainNavPanel>
             <div className='entrance-window'>
                 <div id="wrapper">
-                    <form id="signin" method="" action="" onSubmit={(e) => e.preventDefault()}>
+                    <form className='before:top-22' id="signin" method="" action="" onSubmit={(e) => e.preventDefault()}>
                         <input type="text" id="email" name="email" placeholder="Электронная почта" />
                         <input type="text" id="user" name="user" placeholder="Имя пользователя" />
                         <input type="password" id="newPass" name="newPass" placeholder="Придумайте пароль" />
                         <input type="password" id="newPassRepeat" name="newPassRepeat" placeholder="Повторите пароль" />
-                        {passCoincidence && <p className='text-red'>Введенные пароли не совпадают!</p>}
-                        {emailExistance && <p className='text-red'>Пользователь с данной электронной почтой уже существует!</p>}
-                        <p><Link to="/account">У меня уже есть аккаунт</Link></p>
-                        <button type="submit" onClick={() => checkEntered()}>&#9998;</button>
+                        {passCoincidence && <p className='sign-error'>Введенные пароли не совпадают!</p>}
+                        {emailExistance && <p className='sign-error'>Пользователь с данной электронной почтой уже существует!</p>}
+                        <p className='sign-text'><Link className='sign-link' to="/account">У меня уже есть аккаунт</Link></p>
+                        <button className='top-15' type="submit" onClick={() => {checkEntered();}}>&#9998;</button>
+                        {canRedirect && <Navigate replace to="/account"/>}
                     </form>
                 </div>
             </div>
