@@ -10,35 +10,55 @@ export function SignUpAccount() {
     const [emailExistance, setEmailExistance] = React.useState(false);
     const [canRedirect, setCanRedirect] = React.useState(false);
 
+    let isEmailInvalid: boolean = false;
+    let isRedirectAvailable: boolean = false;
+
+    React.useEffect(() => {
+        const tmpMail = isEmailInvalid;
+        console.log(tmpMail);
+        setEmailExistance(tmpMail);
+    }, [isEmailInvalid]);
+
+    React.useEffect(() => {
+        const tmpRedirect = isRedirectAvailable;
+        console.log(tmpRedirect);
+        setCanRedirect(tmpRedirect);
+    }, [isRedirectAvailable]);
+
     async function checkEmail(email: string) {
-        let response: any = await axios.post('https://api.escuelajs.co/api/v1/users/is-available', 
+        await axios.post('https://api.escuelajs.co/api/v1/users/is-available', 
           {
             email: `${email}`
+          })
+          .then((response) => {
+            if (!response.data.isAvailable) {
+                isEmailInvalid = true;
+            }
           })
           .catch((error) => {
             console.log(error);
         });
-        if (!response.data.isAvailable) setEmailExistance(true);
-        else setEmailExistance(false);
     }
 
     async function registerUser(name: string, email: string, pass: string) {
-        let response: any = await axios.post('https://api.escuelajs.co/api/v1/users/', 
+        await axios.post('https://api.escuelajs.co/api/v1/users/', 
           {
             name: `${name}`,
             email: `${email}`,
             password: `${pass}`,
             avatar: "https://google.ru"
           })
+          .then((response) => {
+            console.log(response);
+          })
           .catch((error) => {
             console.log(error);
         });
-        console.log(response);
     }
 
-    function checkEntered(): void {
-        setEmailExistance(false);
-        setCanRedirect(false);
+    async function checkEntered() {
+        isEmailInvalid = false;
+        isRedirectAvailable = false;
         
         let pass: string = (document.getElementById("newPass") as HTMLInputElement).value;
         let rPass: string = (document.getElementById("newPassRepeat") as HTMLInputElement).value;
@@ -50,12 +70,16 @@ export function SignUpAccount() {
         else setPassCoincidence(false);
 
         let email: string = (document.getElementById("email") as HTMLInputElement).value;
-        checkEmail(email);
-        if (emailExistance) return;
-
-        let name: string = (document.getElementById("user") as HTMLInputElement).value;
-        registerUser(name, email, pass);
-        setCanRedirect(true);
+        await checkEmail(email)
+        .then(() => {
+            if (!isEmailInvalid) {
+                let name: string = (document.getElementById("user") as HTMLInputElement).value;
+                registerUser(name, email, pass)
+                .then(() => {
+                    isRedirectAvailable = true;
+                })
+            }
+        })
     }
 
     return (
