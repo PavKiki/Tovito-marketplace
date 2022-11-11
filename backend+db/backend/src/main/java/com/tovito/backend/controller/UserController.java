@@ -2,6 +2,7 @@ package com.tovito.backend.controller;
 
 import com.tovito.backend.entity.UserEntity;
 import com.tovito.backend.exception.EmailAlreadyRegistered;
+import com.tovito.backend.exception.UserNotFound;
 import com.tovito.backend.repository.UserRepo;
 import com.tovito.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity register(@RequestBody UserEntity user) {
         try {
             userService.register(user);
@@ -29,13 +30,39 @@ public class UserController {
         }
     }
 
-//    @GetMapping
-//    public ResponseEntity getUsers() {
-//        try {
-//            return ResponseEntity.ok("Server is working!");
-//        }
-//        catch (Exception e) {
-//            return ResponseEntity.badRequest().body("Error occured!");
-//        }
-//    }
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity getAllUsers() {
+        try {
+            return ResponseEntity.ok(userService.findAllUsers());
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Unknown error!");
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, params = "email")
+    public ResponseEntity getUserByEmail(@RequestParam String email) {
+        try {
+            return ResponseEntity.ok(userService.findUserByEmail(email));
+        }
+        catch (UserNotFound e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Unknown error!");
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, params = "id")
+    public ResponseEntity getUserById(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok(userService.findUserById(id));
+        }
+        catch (UserNotFound e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Unknown error!");
+        }
+    }
 }

@@ -3,6 +3,7 @@ package com.tovito.backend.entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "photo_entity")
 public class PhotoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,11 +15,19 @@ public class PhotoEntity {
     @Column(nullable = false)
     private String path;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id", nullable = false)
     private ProductEntity product_photo;
 
     public PhotoEntity() {
+    }
+
+    public ProductEntity getProduct_photo() {
+        return product_photo;
+    }
+
+    public void setProduct_photo(ProductEntity product_photo) {
+        this.product_photo = product_photo;
     }
 
     public Long getPhoto_id() {

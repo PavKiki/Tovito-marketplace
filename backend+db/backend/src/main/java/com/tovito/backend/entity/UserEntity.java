@@ -1,11 +1,15 @@
 package com.tovito.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "user_entity")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,12 +30,28 @@ public class UserEntity {
     private Double frozen_balance;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<ProductEntity> products;
+    private List<ProductEntity> products = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "written_comments")
-    private List<CommentEntity> writtenComments;
+    private List<CommentEntity> writtenComments = new ArrayList<>();
 
     public UserEntity() {
+    }
+
+    public List<ProductEntity> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductEntity> products) {
+        this.products = products;
+    }
+
+    public List<CommentEntity> getWrittenComments() {
+        return writtenComments;
+    }
+
+    public void setWrittenComments(List<CommentEntity> writtenComments) {
+        this.writtenComments = writtenComments;
     }
 
     public Long getUser_id() {
