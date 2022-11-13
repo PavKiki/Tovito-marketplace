@@ -3,7 +3,7 @@ package com.tovito.backend.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "photo_entity")
+@Table(name = "Photo")
 public class PhotoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,13 +52,5 @@ public class PhotoEntity {
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    public ProductEntity getProduct() {
-        return product_photo;
-    }
-
-    public void setProduct(ProductEntity product) {
-        this.product_photo = product;
     }
 }

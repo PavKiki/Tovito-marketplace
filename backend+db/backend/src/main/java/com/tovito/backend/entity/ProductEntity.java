@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "product_entity")
+@Table(name = "Products")
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,34 +33,22 @@ public class ProductEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product_photo")
-    private List<PhotoEntity> photos = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, orphanRemoval = true, mappedBy = "product_photo")
+    private Set<PhotoEntity> photos = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product_comment")
-    private List<CommentEntity> comments = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, orphanRemoval = true, mappedBy = "product_comment")
+    private Set<CommentEntity> comments = new HashSet<>();
 
     public ProductEntity() {
-    }
-
-    public List<PhotoEntity> getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(List<PhotoEntity> photos) {
-        this.photos = photos;
-    }
-
-    public List<CommentEntity> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentEntity> comments) {
-        this.comments = comments;
     }
 
     public UserEntity getUser() {
         return user;
     }
+
+    public void addComment(CommentEntity comment) {comments.add(comment);}
+
+    public void addPhoto(PhotoEntity photo) {photos.add(photo);}
 
     public void setUser(UserEntity user) {
         this.user = user;

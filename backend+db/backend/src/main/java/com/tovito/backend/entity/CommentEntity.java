@@ -3,7 +3,7 @@ package com.tovito.backend.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "comment_entity")
+@Table(name = "Comment")
 public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,23 +12,26 @@ public class CommentEntity {
     @Column(nullable = false)
     private Integer rating;
 
+    @Column(nullable = false)
+    private String text;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private ProductEntity product_comment;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "from_user_id", referencedColumnName = "user_id")
-    private UserEntity written_comments;
+    private UserEntity commentsByUser;
 
     public CommentEntity() {
     }
 
     public UserEntity getWritten_comments() {
-        return written_comments;
+        return commentsByUser;
     }
 
     public void setWritten_comments(UserEntity written_comments) {
-        this.written_comments = written_comments;
+        this.commentsByUser = written_comments;
     }
 
     public Long getComment_id() {
@@ -45,6 +48,14 @@ public class CommentEntity {
 
     public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public ProductEntity getProduct_comment() {

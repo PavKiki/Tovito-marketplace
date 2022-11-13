@@ -6,10 +6,12 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "category_entity")
+@Table(name = "Category")
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +23,14 @@ public class CategoryEntity {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
-    private List<ProductEntity> products = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, orphanRemoval = true, mappedBy = "category")
+    private Set<ProductEntity> products = new HashSet<>();
 
     public CategoryEntity() {
+    }
+
+    public void addProduct(ProductEntity product) {
+        products.add(product);
     }
 
     public Long getCategory_id() {
@@ -51,11 +57,4 @@ public class CategoryEntity {
         this.description = description;
     }
 
-    public List<ProductEntity> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<ProductEntity> products) {
-        this.products = products;
-    }
 }

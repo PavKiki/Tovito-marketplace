@@ -6,10 +6,12 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "user_entity")
+@Table(name = "Users")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,29 +31,21 @@ public class UserEntity {
     @Column(nullable = false)
     private Double frozen_balance;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<ProductEntity> products = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, orphanRemoval = true, mappedBy = "user")
+    private Set<ProductEntity> products = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "written_comments")
-    private List<CommentEntity> writtenComments = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, orphanRemoval = true, mappedBy = "commentsByUser")
+    private Set<CommentEntity> writtenComments = new HashSet<>();
 
     public UserEntity() {
     }
 
-    public List<ProductEntity> getProducts() {
-        return products;
+    public void addProduct(ProductEntity product) {
+        products.add(product);
     }
 
-    public void setProducts(List<ProductEntity> products) {
-        this.products = products;
-    }
-
-    public List<CommentEntity> getWrittenComments() {
-        return writtenComments;
-    }
-
-    public void setWrittenComments(List<CommentEntity> writtenComments) {
-        this.writtenComments = writtenComments;
+    public void addComment(CommentEntity comment) {
+        writtenComments.add(comment);
     }
 
     public Long getUser_id() {

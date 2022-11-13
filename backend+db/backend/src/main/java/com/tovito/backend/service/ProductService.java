@@ -2,7 +2,10 @@ package com.tovito.backend.service;
 
 import com.tovito.backend.entity.ProductEntity;
 import com.tovito.backend.entity.UserEntity;
+import com.tovito.backend.exception.CategoryNotFound;
 import com.tovito.backend.exception.UserNotFound;
+import com.tovito.backend.model.ProductModel;
+import com.tovito.backend.repository.CategoryRepo;
 import com.tovito.backend.repository.ProductRepo;
 import com.tovito.backend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +18,16 @@ import java.util.Optional;
 public class ProductService {
     @Autowired
     public ProductRepo productRepo;
+
     @Autowired
     public UserRepo userRepo;
 
-    public ProductEntity createProduct(ProductEntity product) {
-        return productRepo.save(product);
+    @Autowired
+    public CategoryRepo categoryRepo;
+
+    public ProductEntity createProduct(ProductModel product) throws UserNotFound, CategoryNotFound{
+        ProductEntity entity = product.toEntity(userRepo, categoryRepo);
+        return productRepo.save(entity);
     }
 
     public Iterable<ProductEntity> getAllProducts() {
