@@ -18,7 +18,7 @@ export function SignUpAccount() {
     }, [isRedirectAvailable]);
 
     async function registerUser(name: string, email: string, pass: string) {
-        await axios.post('localhost:8080/user/register', 
+        await axios.post('http://localhost:8080/user/register', 
           {
             name: `${name}`,
             email: `${email}`,

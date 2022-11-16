@@ -38,7 +38,7 @@ public class CommentModel {
         if (!user.isPresent()) throw new UserNotFound("id пользователя, отправившего комментарий, не найден!");
         else {
             user.get().addComment(entity);
-            entity.setWritten_comments(user.get());
+            entity.setCommentsByUser(user.get());
         }
 
         Optional<ProductEntity> product = productRepo.findById(productId);

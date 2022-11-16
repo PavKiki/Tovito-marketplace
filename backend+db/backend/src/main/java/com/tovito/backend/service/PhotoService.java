@@ -7,12 +7,14 @@ import com.tovito.backend.exception.InvalidPhotoType;
 import com.tovito.backend.exception.ProductNotFound;
 import com.tovito.backend.exception.UserNotFound;
 import com.tovito.backend.model.PhotoModel;
+import com.tovito.backend.model.PhotoSafeModel;
 import com.tovito.backend.model.ProductModel;
 import com.tovito.backend.repository.PhotoRepo;
 import com.tovito.backend.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,11 +32,19 @@ public class PhotoService {
         return photoRepo.save(entity);
     }
 
-    public List<PhotoEntity> getPhotosOfProduct(Long productId) {
-        return photoRepo.findPhotosOfProduct(productId);
+    public List<PhotoSafeModel> getPhotosOfProduct(Long productId) {
+        List<PhotoSafeModel> safeModels = new ArrayList<>();
+        for (PhotoEntity photo: photoRepo.findPhotosOfProduct(productId)) {
+            safeModels.add(photo.toSafeModel());
+        }
+        return safeModels;
     }
 
-    public Iterable<PhotoEntity> getAllPhotos() {
-        return photoRepo.findAll();
+    public List<PhotoSafeModel> getAllPhotos() {
+        List<PhotoSafeModel> safeModels = new ArrayList<>();
+        for (PhotoEntity photo: photoRepo.findAll()) {
+            safeModels.add(photo.toSafeModel());
+        }
+        return safeModels;
     }
 }

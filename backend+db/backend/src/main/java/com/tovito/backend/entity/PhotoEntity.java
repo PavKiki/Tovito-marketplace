@@ -1,5 +1,7 @@
 package com.tovito.backend.entity;
 
+import com.tovito.backend.model.PhotoSafeModel;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,6 +22,17 @@ public class PhotoEntity {
     private ProductEntity product_photo;
 
     public PhotoEntity() {
+    }
+
+    public PhotoSafeModel toSafeModel() {
+        PhotoSafeModel safeModel = new PhotoSafeModel();
+
+        safeModel.setPhotoId(this.getPhoto_id());
+        safeModel.setType(this.getType());
+        safeModel.setPath(this.getPath());
+        safeModel.setProduct(this.getProduct_photo().toSafeModel());
+
+        return safeModel;
     }
 
     public ProductEntity getProduct_photo() {

@@ -1,2 +1,1 @@
-import { singleAccount } from '../models'
-
+import { singleUser } from '../models'

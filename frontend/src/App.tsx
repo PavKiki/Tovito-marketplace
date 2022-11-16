@@ -13,14 +13,14 @@ function App() {
 
   async function fetchCategories() {
     setLoading(true);
-    const responseCatgs = await axios.get<singleCategory[]>('localhost:8080/categories');
+    const responseCatgs = await axios.get<singleCategory[]>('http://localhost:8080/categories');
     axSetCategories(responseCatgs.data);
     setLoading(false);
   };
 
   async function fetchProducts() {
     setLoading(true);
-    const responsePrdcts = await axios.get<singleProduct[]>('localhost:8080/products');
+    const responsePrdcts = await axios.get<singleProduct[]>('http://localhost:8080/products');
     axSetProducts(responsePrdcts.data);
     setLoading(false);
   };

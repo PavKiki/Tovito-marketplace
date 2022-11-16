@@ -14,7 +14,7 @@ export function Category() {
     React.useEffect(() => {
         async function fetchProducts() {
             setLoading(true);
-            const responsePrdcts = await axios.get<singleProduct[]>('localhost:8080/products/ofcategory?id=' + cId);
+            const responsePrdcts = await axios.get<singleProduct[]>('http://localhost:8080/products/ofcategory?id=' + cId);
             axSetProducts(responsePrdcts.data);
             setLoading(false);
         };

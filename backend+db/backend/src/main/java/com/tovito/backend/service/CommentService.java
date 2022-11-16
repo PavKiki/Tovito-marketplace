@@ -5,12 +5,16 @@ import com.tovito.backend.exception.InvalidRating;
 import com.tovito.backend.exception.ProductNotFound;
 import com.tovito.backend.exception.UserNotFound;
 import com.tovito.backend.model.CommentModel;
+import com.tovito.backend.model.CommentSafeModel;
 import com.tovito.backend.repository.CategoryRepo;
 import com.tovito.backend.repository.CommentRepo;
 import com.tovito.backend.repository.ProductRepo;
 import com.tovito.backend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CommentService {
@@ -28,7 +32,11 @@ public class CommentService {
         return commentRepo.save(entity);
     }
 
-    public Iterable<CommentEntity> getAllComments() {
-        return commentRepo.findAll();
+    public List<CommentSafeModel> getAllComments() {
+        List<CommentSafeModel> safeModels = new ArrayList<>();
+        for (CommentEntity comment: commentRepo.findAll()) {
+            safeModels.add(comment.toSafeModel());
+        }
+        return safeModels;
     }
 }

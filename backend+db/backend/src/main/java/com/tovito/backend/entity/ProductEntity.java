@@ -2,6 +2,8 @@ package com.tovito.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.tovito.backend.model.ProductModel;
+import com.tovito.backend.model.ProductSafeModel;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -40,6 +42,19 @@ public class ProductEntity {
     private Set<CommentEntity> comments = new HashSet<>();
 
     public ProductEntity() {
+    }
+
+    public ProductSafeModel toSafeModel() {
+        ProductSafeModel safeProduct = new ProductSafeModel();
+
+        safeProduct.setProductId(this.getProduct_id());
+        safeProduct.setTitle(this.getTitle());
+        safeProduct.setDescription(this.getDescription());
+        safeProduct.setPrice(this.getPrice());
+        safeProduct.setCategory(this.getCategory());
+        safeProduct.setUser(this.getUser().toSafeModel());
+
+        return safeProduct;
     }
 
     public UserEntity getUser() {

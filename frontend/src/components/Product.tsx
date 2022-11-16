@@ -13,7 +13,7 @@ export function Product(props: productProps) {
     const [axPhotos, axSetPhotos] = React.useState<singlePhoto[]>();
 
     async function fetchPhotos() {
-        const responsePhotos = await axios.get<singlePhoto[]>('localhost:8080/photo/ofproduct?id='+props.product.product_id);
+        const responsePhotos = await axios.get<singlePhoto[]>('http://localhost:8080/photo/ofproduct?id='+props.product.product_id);
         axSetPhotos(responsePhotos.data);
     }
 
@@ -30,8 +30,8 @@ export function Product(props: productProps) {
     return (    
         <div className="border py-2 px-4 rounded flex flex-col mb-2">
             <h1><strong>{props.product.title}</strong></h1>
-            <img alt='' src={axPhotos.at(imgIndex).path}></img>
-            <div className='flex border-b space-x-0'>
+            {axPhotos && <img alt='' src={axPhotos.at(imgIndex).path}></img>}
+            {axPhotos && <div className='flex border-b space-x-0'>
                 <div className="w-1/2 text-left">
                     {imgIndex !== 0 && 
                         <button onClick={() => indexHandler(axPhotos.length, false)}>&#8592;</button>}
@@ -40,7 +40,7 @@ export function Product(props: productProps) {
                     {imgIndex !== axPhotos.length - 1 && 
                         <button onClick={() => indexHandler(axPhotos.length, true)}>&#8594;</button>}
                 </div>
-            </div>
+            </div>}
             <p>{props.product.description}</p>
             <p>Price: <strong>{props.product.price}</strong> rubles</p>
             <p className='text-left'>Category: <b>{props.product.category.title}</b></p>

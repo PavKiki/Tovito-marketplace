@@ -8,7 +8,7 @@ export function SignInAccount() {
     const [unauthorized, setUnauthorized] = React.useState(false);
 
     async function sendUserData(email: string, pass: string) {
-        let response: any = await axios.post('localhost:8080/user/login',
+        let response: any = await axios.post('http://localhost:8080/user/login',
         {
             email: `${email}`,
             password: `${pass}`

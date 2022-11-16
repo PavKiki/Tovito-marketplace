@@ -1,5 +1,7 @@
 package com.tovito.backend.entity;
 
+import com.tovito.backend.model.CommentSafeModel;
+
 import javax.persistence.*;
 
 @Entity
@@ -26,12 +28,24 @@ public class CommentEntity {
     public CommentEntity() {
     }
 
-    public UserEntity getWritten_comments() {
+    public CommentSafeModel toSafeModel() {
+        CommentSafeModel safeModel = new CommentSafeModel();
+
+        safeModel.setCommentId(this.getComment_id());
+        safeModel.setRating(this.getRating());
+        safeModel.setText(this.getText());
+        safeModel.setProductComment(this.getProduct_comment().toSafeModel());
+        safeModel.setCommentByUser(this.getCommentsByUser().toSafeModel());
+
+        return safeModel;
+    }
+
+    public UserEntity getCommentsByUser() {
         return commentsByUser;
     }
 
-    public void setWritten_comments(UserEntity written_comments) {
-        this.commentsByUser = written_comments;
+    public void setCommentsByUser(UserEntity commentsByUser) {
+        this.commentsByUser = commentsByUser;
     }
 
     public Long getComment_id() {
