@@ -3,10 +3,13 @@ package com.tovito.backend.controller;
 import com.tovito.backend.entity.UserEntity;
 import com.tovito.backend.exception.EmailAlreadyRegistered;
 import com.tovito.backend.exception.UserNotFound;
+import com.tovito.backend.exception.WrongPassword;
+import com.tovito.backend.model.UserSignInModel;
 import com.tovito.backend.model.UserSignUpModel;
 import com.tovito.backend.repository.UserRepo;
 import com.tovito.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.config.RepositoryConfigurationSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,6 +67,23 @@ public class UserController {
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body("Unknown error!");
+        }
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity loginUser(@RequestBody UserSignInModel userData) {
+        try {
+            userService.loginUser(userData);
+            return ResponseEntity.ok("Пользователь успешно вошел в систему!");
+        }
+        catch (UserNotFound e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        catch (WrongPassword e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

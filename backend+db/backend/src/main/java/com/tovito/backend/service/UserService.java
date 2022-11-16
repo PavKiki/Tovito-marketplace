@@ -3,7 +3,9 @@ package com.tovito.backend.service;
 import com.tovito.backend.entity.UserEntity;
 import com.tovito.backend.exception.EmailAlreadyRegistered;
 import com.tovito.backend.exception.UserNotFound;
+import com.tovito.backend.exception.WrongPassword;
 import com.tovito.backend.model.UserSafeModel;
+import com.tovito.backend.model.UserSignInModel;
 import com.tovito.backend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,5 +45,12 @@ public class UserService {
         Optional<UserEntity> user = userRepo.findById(id);
         if (!user.isPresent()) throw new UserNotFound("Пользователя с id = \"" + id + "\" не существует!");
         return user.get().toSafeModel();
+    }
+
+    public UserSafeModel loginUser(UserSignInModel user) throws UserNotFound, WrongPassword {
+        UserEntity entity = userRepo.findByEmail(user.getEmail());
+        if (entity == null) throw new UserNotFound("Пользователя с данной электронной почтой не существует!");
+        if (!entity.getPassword().equals(user.getPassword())) throw new WrongPassword("Пароли не совпадают!");
+        return entity.toSafeModel();
     }
 }
