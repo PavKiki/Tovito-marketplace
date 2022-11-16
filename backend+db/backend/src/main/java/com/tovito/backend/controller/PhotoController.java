@@ -6,10 +6,7 @@ import com.tovito.backend.model.PhotoModel;
 import com.tovito.backend.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/photo")
@@ -38,6 +35,16 @@ public class PhotoController {
     public ResponseEntity getAllPhotos() {
         try {
             return ResponseEntity.ok(photoService.getAllPhotos());
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/ofproduct", params = "id", method = RequestMethod.GET)
+    public ResponseEntity getAllPhotosOfProduct(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok(photoService.getPhotosOfProduct(id));
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

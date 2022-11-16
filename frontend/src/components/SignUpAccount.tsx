@@ -7,17 +7,9 @@ import '../css_components/sign-inup-form.css';
 export function SignUpAccount() {
 
     const [passCoincidence, setPassCoincidence] = React.useState(false);
-    const [emailExistance, setEmailExistance] = React.useState(false);
     const [canRedirect, setCanRedirect] = React.useState(false);
 
-    let isEmailInvalid: boolean = false;
     let isRedirectAvailable: boolean = false;
-
-    React.useEffect(() => {
-        const tmpMail = isEmailInvalid;
-        console.log(tmpMail);
-        setEmailExistance(tmpMail);
-    }, [isEmailInvalid]);
 
     React.useEffect(() => {
         const tmpRedirect = isRedirectAvailable;
@@ -25,39 +17,24 @@ export function SignUpAccount() {
         setCanRedirect(tmpRedirect);
     }, [isRedirectAvailable]);
 
-    async function checkEmail(email: string) {
-        await axios.post('https://api.escuelajs.co/api/v1/users/is-available', 
-          {
-            email: `${email}`
-          })
-          .then((response) => {
-            if (!response.data.isAvailable) {
-                isEmailInvalid = true;
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-        });
-    }
-
     async function registerUser(name: string, email: string, pass: string) {
-        await axios.post('https://api.escuelajs.co/api/v1/users/', 
+        await axios.post('localhost:8080/user/register', 
           {
             name: `${name}`,
             email: `${email}`,
             password: `${pass}`,
-            avatar: "https://google.ru"
           })
           .then((response) => {
             console.log(response);
+            setCanRedirect(true);
           })
           .catch((error) => {
             console.log(error);
+            setCanRedirect(false);
         });
     }
 
     async function checkEntered() {
-        isEmailInvalid = false;
         isRedirectAvailable = false;
         
         let pass: string = (document.getElementById("newPass") as HTMLInputElement).value;
@@ -70,16 +47,8 @@ export function SignUpAccount() {
         else setPassCoincidence(false);
 
         let email: string = (document.getElementById("email") as HTMLInputElement).value;
-        await checkEmail(email)
-        .then(() => {
-            if (!isEmailInvalid) {
-                let name: string = (document.getElementById("user") as HTMLInputElement).value;
-                registerUser(name, email, pass)
-                .then(() => {
-                    isRedirectAvailable = true;
-                })
-            }
-        })
+        let name: string = (document.getElementById("user") as HTMLInputElement).value;
+        registerUser(name, email, pass);
     }
 
     return (
@@ -93,7 +62,7 @@ export function SignUpAccount() {
                         <input type="password" id="newPass" name="newPass" placeholder="Придумайте пароль" />
                         <input type="password" id="newPassRepeat" name="newPassRepeat" placeholder="Повторите пароль" />
                         {passCoincidence && <p className='sign-error'>Введенные пароли не совпадают!</p>}
-                        {emailExistance && <p className='sign-error'>Пользователь с данной электронной почтой уже существует!</p>}
+                        {/* {emailExistance && <p className='sign-error'>Пользователь с данной электронной почтой уже существует!</p>} */}
                         <p className='sign-text'><Link className='sign-link' to="/account">У меня уже есть аккаунт</Link></p>
                         <button className='top-15' type="submit" onClick={() => {checkEntered();}}>&#9998;</button>
                         {canRedirect && <Navigate replace to="/account"/>}

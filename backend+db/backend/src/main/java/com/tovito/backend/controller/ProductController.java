@@ -41,4 +41,14 @@ public class ProductController {
             return ResponseEntity.badRequest().body("Unknown error!");
         }
     }
+
+    @RequestMapping(value = "/ofcategory", params = "id", method = RequestMethod.GET)
+    public ResponseEntity getAllProductsOfCategory(@RequestParam Long id) {
+        try {
+            return ResponseEntity.ok(productService.getAllPhotosOfCategory(id));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

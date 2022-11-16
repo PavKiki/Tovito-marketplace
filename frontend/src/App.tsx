@@ -13,14 +13,14 @@ function App() {
 
   async function fetchCategories() {
     setLoading(true);
-    const responseCatgs = await axios.get<singleCategory[]>('https://api.escuelajs.co/api/v1/categories');
+    const responseCatgs = await axios.get<singleCategory[]>('localhost:8080/categories');
     axSetCategories(responseCatgs.data);
     setLoading(false);
   };
 
   async function fetchProducts() {
     setLoading(true);
-    const responsePrdcts = await axios.get<singleProduct[]>('https://api.escuelajs.co/api/v1/products?offset=0&limit=10');
+    const responsePrdcts = await axios.get<singleProduct[]>('localhost:8080/products');
     axSetProducts(responsePrdcts.data);
     setLoading(false);
   };
@@ -35,7 +35,7 @@ function App() {
       {axCategories && <NavPanel categories={axCategories!}/>}
       <div className="mx-auto max-w-2xl pt-5 -z-50">
         {loading && <p className="text-center">Loading...</p>}
-        {axProducts?.map(singleProduct => <Product key={singleProduct.id} product={singleProduct}/>)}
+        {axProducts?.map(singleProduct => <Product key={singleProduct.product_id} product={singleProduct}/>)}
       </div>
     </div>
   )

@@ -1,5 +1,6 @@
 import React from 'react';
-import { singleProduct } from '../models';
+import axios from 'axios';
+import { singleProduct, singlePhoto } from '../models';
 import '../css_components/product.css';
 
 interface productProps {
@@ -9,6 +10,12 @@ interface productProps {
 export function Product(props: productProps) {
 
     const [imgIndex, setImgIndex] = React.useState(0);
+    const [axPhotos, axSetPhotos] = React.useState<singlePhoto[]>();
+
+    async function fetchPhotos() {
+        const responsePhotos = await axios.get<singlePhoto[]>('localhost:8080/photo/ofproduct?id='+props.product.product_id);
+        axSetPhotos(responsePhotos.data);
+    }
 
     function indexHandler(len: number, increase: boolean): void {
         if ((increase && imgIndex === (len - 1)) || (!increase && imgIndex === 0)) return;
@@ -16,24 +23,27 @@ export function Product(props: productProps) {
         else setImgIndex(imgIndex-1);
     }
 
+    React.useEffect(() => {
+        fetchPhotos();
+      }, []);
+
     return (    
         <div className="border py-2 px-4 rounded flex flex-col mb-2">
             <h1><strong>{props.product.title}</strong></h1>
-            <img alt='' src={props.product.images[imgIndex]}></img>
+            <img alt='' src={axPhotos.at(imgIndex).path}></img>
             <div className='flex border-b space-x-0'>
                 <div className="w-1/2 text-left">
                     {imgIndex !== 0 && 
-                        <button onClick={() => indexHandler(props.product.images.length, false)}>&#8592;</button>}
+                        <button onClick={() => indexHandler(axPhotos.length, false)}>&#8592;</button>}
                 </div>
                 <div className="w-1/2 text-right">
-                    {imgIndex !== props.product.images.length - 1 && 
-                        <button onClick={() => indexHandler(props.product.images.length, true)}>&#8594;</button>}
+                    {imgIndex !== axPhotos.length - 1 && 
+                        <button onClick={() => indexHandler(axPhotos.length, true)}>&#8594;</button>}
                 </div>
             </div>
             <p>{props.product.description}</p>
             <p>Price: <strong>{props.product.price}</strong> rubles</p>
-            <p className='text-left'>Category: <b>{props.product.category.name}</b></p>
-            <p><img alt='' className='category-image' width="128" src={props.product.category.image}></img></p>
+            <p className='text-left'>Category: <b>{props.product.category.title}</b></p>
         </div>
     )
 }

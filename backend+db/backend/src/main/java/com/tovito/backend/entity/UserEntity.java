@@ -3,6 +3,7 @@ package com.tovito.backend.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
+import com.tovito.backend.model.UserSafeModel;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -38,6 +39,20 @@ public class UserEntity {
     private Set<CommentEntity> writtenComments = new HashSet<>();
 
     public UserEntity() {
+    }
+
+    public UserSafeModel toSafeModel() {
+        UserSafeModel safeUser = new UserSafeModel();
+
+        safeUser.setUserId(this.getUser_id());
+        safeUser.setName(this.getName());
+        safeUser.setEmail(this.getEmail());
+        safeUser.setRole(this.getRole());
+        safeUser.setWalletId(this.wallet_id);
+        safeUser.setBalance(this.getBalance());
+        safeUser.setFrozenBalance(this.getFrozen_balance());
+
+        return safeUser;
     }
 
     public void addProduct(ProductEntity product) {

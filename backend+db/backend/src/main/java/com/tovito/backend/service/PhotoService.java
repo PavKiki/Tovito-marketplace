@@ -13,6 +13,8 @@ import com.tovito.backend.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PhotoService {
     @Autowired
@@ -26,6 +28,10 @@ public class PhotoService {
             throw new InvalidPhotoType("Некорректное расширение изображения!");
         }
         return photoRepo.save(entity);
+    }
+
+    public List<PhotoEntity> getPhotosOfProduct(Long productId) {
+        return photoRepo.findPhotosOfProduct(productId);
     }
 
     public Iterable<PhotoEntity> getAllPhotos() {

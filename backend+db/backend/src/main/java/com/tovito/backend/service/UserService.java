@@ -3,11 +3,14 @@ package com.tovito.backend.service;
 import com.tovito.backend.entity.UserEntity;
 import com.tovito.backend.exception.EmailAlreadyRegistered;
 import com.tovito.backend.exception.UserNotFound;
+import com.tovito.backend.model.UserSafeModel;
 import com.tovito.backend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,19 +25,23 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public Iterable<UserEntity> findAllUsers() {
-        return userRepo.findAll();
+    public List<UserSafeModel> findAllUsers() {
+        List<UserSafeModel> safeUsers = new ArrayList<>();
+        for (UserEntity user: userRepo.findAll()) {
+            safeUsers.add(user.toSafeModel());
+        }
+        return safeUsers;
     }
 
-    public UserEntity findUserByEmail(String email) throws UserNotFound {
+    public UserSafeModel findUserByEmail(String email) throws UserNotFound {
         UserEntity user = userRepo.findByEmail(email);
         if (user == null) throw new UserNotFound("Пользователь с почтой \"" + email + "\" не зарегистрирован!");
-        return user;
+        return user.toSafeModel();
     }
 
-    public UserEntity findUserById(Long id) throws UserNotFound {
+    public UserSafeModel findUserById(Long id) throws UserNotFound {
         Optional<UserEntity> user = userRepo.findById(id);
         if (!user.isPresent()) throw new UserNotFound("Пользователя с id = \"" + id + "\" не существует!");
-        return user.get();
+        return user.get().toSafeModel();
     }
 }

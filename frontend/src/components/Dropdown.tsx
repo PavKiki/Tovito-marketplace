@@ -11,7 +11,7 @@ export function DropdownMenu(props: IDropdownItem) {
 	return(
 	<li className="navigation-panel-item text-white "><Link to={"/"} aria-haspopup="true">Категории</Link>
       <ul className="navigation-panel-dropdown bg-orange hidden opacity-0 absolute left-0" aria-label="submenu">
-        {props.cats.map(c => <Link to={`/category/${c.id}`} className="navigation-panel-item clear-both w-full text-white" key={key++}>{c.name}</Link>)}
+        {props.cats.map(c => <Link to={`/category/${c.category_id}`} className="navigation-panel-item clear-both w-full text-white" key={key++}>{c.title}</Link>)}
       </ul>
     </li>	
 )}

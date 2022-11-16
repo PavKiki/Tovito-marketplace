@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,6 +29,10 @@ public class ProductService {
     public ProductEntity createProduct(ProductModel product) throws UserNotFound, CategoryNotFound{
         ProductEntity entity = product.toEntity(userRepo, categoryRepo);
         return productRepo.save(entity);
+    }
+
+    public List<ProductEntity> getAllPhotosOfCategory(Long categoryId) {
+        return productRepo.getAllProductsOfCategory(categoryId);
     }
 
     public Iterable<ProductEntity> getAllProducts() {

@@ -3,6 +3,7 @@ package com.tovito.backend.controller;
 import com.tovito.backend.entity.UserEntity;
 import com.tovito.backend.exception.EmailAlreadyRegistered;
 import com.tovito.backend.exception.UserNotFound;
+import com.tovito.backend.model.UserSignUpModel;
 import com.tovito.backend.repository.UserRepo;
 import com.tovito.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,9 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity register(@RequestBody UserEntity user) {
+    public ResponseEntity register(@RequestBody UserSignUpModel user) {
         try {
-            userService.register(user);
+            userService.register(user.toEntity());
             return ResponseEntity.ok("Пользователь успешно сохранен!");
         }
         catch (EmailAlreadyRegistered e) {
