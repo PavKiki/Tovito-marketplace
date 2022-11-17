@@ -14,7 +14,7 @@ export function Category() {
     React.useEffect(() => {
         async function fetchProducts() {
             setLoading(true);
-            const responsePrdcts = await axios.get<singleProduct[]>('http://localhost:8080/products/ofcategory?id=' + cId);
+            const responsePrdcts = await axios.get<singleProduct[]>('http://localhost:8080/products/ofcategory?id=' + cId.categoryId);
             axSetProducts(responsePrdcts.data);
             setLoading(false);
         };
@@ -27,7 +27,7 @@ export function Category() {
         <ToMainNavPanel/>
         <div className="mx-auto max-w-2xl pt-5 -z-50">
             {loading && <p className="text-center">Loading...</p>}
-            {axProducts?.map(singleProduct => <Product key={singleProduct.product_id} product={singleProduct}/>)}
+            {axProducts?.map(singleProduct => <Product key={singleProduct.productId} product={singleProduct}/>)}
         </div>
     </div>
 )}

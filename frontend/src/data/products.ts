@@ -3,7 +3,7 @@ import {categories} from './categories';
 
 export const products: singleProduct[] = [
     {
-        product_id: 4,
+        productId: 4,
         title: 'Small Cotton Chips',
         description: 'Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support',
         price: 713,
@@ -11,7 +11,7 @@ export const products: singleProduct[] = [
         user: null
     },
     {
-        product_id: 5,
+        productId: 5,
         title: "Incredible Concrete Gloves",
         description: "The Football Is Good For Training And Recreational Purposes",
         price: 289,

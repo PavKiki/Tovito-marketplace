@@ -5,7 +5,7 @@ export interface singleCategory {
 }
 
 export interface singleProduct {
-    product_id: number;
+    productId: number;
     title: string;
     description: string;
     price: number;
@@ -14,27 +14,26 @@ export interface singleProduct {
 }
 
 export interface singleUser {
-    user_id: number;
+    userId: number;
     name: string;
     email: string;
-    password: string;
     role: string;
-    wallet_id: string;
+    walletId: string;
     balance: number;
-    frozen_balance: number;
+    frozenBalance: number;
 }
 
 export interface singlePhoto {
-    photo_id: number;
+    photoId: number;
     type: string;
     path: string;
-    product_photo: singleProduct;
+    product: singleProduct;
 }
 
 export interface singleComment {
-    comment_id: number;
+    commentId: number;
     rating: number;
     text: string;
-    product_comment: singleProduct;
-    written_comments: singleUser;
+    productComment: singleProduct;
+    commentByUser: singleUser;
 }
