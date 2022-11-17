@@ -5,7 +5,6 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { ToMainNavPanel } from "./ToMainNavPanel";
 
-
 export function Category() {
     const [axProducts, axSetProducts] = React.useState<singleProduct[]>();
     const [loading, setLoading] = React.useState(false);
@@ -18,7 +17,6 @@ export function Category() {
             axSetProducts(responsePrdcts.data);
             setLoading(false);
         };
-        console.log(axProducts);
         fetchProducts();
     }, [])
 
