@@ -6,10 +6,7 @@ import com.sun.istack.NotNull;
 import com.tovito.backend.model.UserSafeModel;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "Users")
@@ -23,8 +20,8 @@ public class UserEntity {
     private String email;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
-    private String role;
+//    @Column(nullable = false)
+//    private String role;
     @Column(nullable = false)
     private String wallet_id;
     @Column(nullable = false)
@@ -32,11 +29,24 @@ public class UserEntity {
     @Column(nullable = false)
     private Double frozen_balance;
 
+    @Column(nullable = false)
+    private boolean tokenExpired;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, orphanRemoval = true, mappedBy = "user")
     private Set<ProductEntity> products = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, orphanRemoval = true, mappedBy = "commentsByUser")
     private Set<CommentEntity> writtenComments = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "Roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id")
+            )
+    private Collection<RoleEntity> roles;
 
     public UserEntity() {
     }
@@ -47,7 +57,6 @@ public class UserEntity {
         safeUser.setUserId(this.getUser_id());
         safeUser.setName(this.getName());
         safeUser.setEmail(this.getEmail());
-        safeUser.setRole(this.getRole());
         safeUser.setWalletId(this.wallet_id);
         safeUser.setBalance(this.getBalance());
         safeUser.setFrozenBalance(this.getFrozen_balance());
@@ -95,14 +104,6 @@ public class UserEntity {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public String getWallet_id() {
         return wallet_id;
     }
@@ -125,5 +126,21 @@ public class UserEntity {
 
     public void setFrozen_balance(Double frozen_balance) {
         this.frozen_balance = frozen_balance;
+    }
+
+    public boolean isTokenExpired() {
+        return tokenExpired;
+    }
+
+    public void setTokenExpired(boolean tokenExpired) {
+        this.tokenExpired = tokenExpired;
+    }
+
+    public Collection<RoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<RoleEntity> roles) {
+        this.roles = roles;
     }
 }

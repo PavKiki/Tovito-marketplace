@@ -6,6 +6,8 @@ import com.tovito.backend.exception.UserNotFound;
 import com.tovito.backend.exception.WrongPassword;
 import com.tovito.backend.model.UserSafeModel;
 import com.tovito.backend.model.UserSignInModel;
+import com.tovito.backend.model.UserSignUpModel;
+import com.tovito.backend.repository.RoleRepo;
 import com.tovito.backend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +22,14 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
 
-    public UserEntity register (UserEntity user) throws EmailAlreadyRegistered {
+    @Autowired
+    private RoleRepo roleRepo;
+
+    public UserEntity register (UserSignUpModel user) throws EmailAlreadyRegistered {
         if (userRepo.findByEmail(user.getEmail()) != null) {
             throw new EmailAlreadyRegistered("Пользователь с данной электронной почтой уже существует!");
         }
-        return userRepo.save(user);
+        return userRepo.save(user.toEntity(roleRepo));
     }
 
     public List<UserSafeModel> findAllUsers() {

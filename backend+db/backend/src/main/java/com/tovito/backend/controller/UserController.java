@@ -23,7 +23,7 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity register(@RequestBody UserSignUpModel user) {
         try {
-            userService.register(user.toEntity());
+            userService.register(user);
             return ResponseEntity.ok("Пользователь успешно сохранен!");
         }
         catch (EmailAlreadyRegistered e) {

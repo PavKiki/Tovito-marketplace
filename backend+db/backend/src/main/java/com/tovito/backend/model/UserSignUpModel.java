@@ -1,6 +1,9 @@
 package com.tovito.backend.model;
 
 import com.tovito.backend.entity.UserEntity;
+import com.tovito.backend.repository.RoleRepo;
+
+import java.util.Arrays;
 
 public class UserSignUpModel {
     private String name;
@@ -10,16 +13,15 @@ public class UserSignUpModel {
     public UserSignUpModel() {
     }
 
-    public UserEntity toEntity() {
+    public UserEntity toEntity(RoleRepo roleRepo) {
         UserEntity entity = new UserEntity();
         entity.setName(this.getName());
         entity.setEmail(this.getEmail());
         entity.setPassword(this.getPassword());
         entity.setBalance(0.0);
         entity.setFrozen_balance(0.0);
+        entity.setRoles(Arrays.asList(roleRepo.findByName("ROLE_USER")));
 
-        //Further realization is needed
-        entity.setRole("customer");
         //Connect with EOSIO
         entity.setWallet_id("puk-srenk");
 

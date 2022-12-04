@@ -30,7 +30,7 @@ export function Product(props: productProps) {
     return (    
         <div className="border py-2 px-4 rounded flex flex-col mb-2">
             <h1><strong>{props.product.title}</strong></h1>
-            {axPhotos && axPhotos.length !== 0 && <img alt='' src={axPhotos[imgIndex].path}></img>}
+            {axPhotos && axPhotos.length !== 0 && <img alt='' src={'/' + axPhotos[imgIndex].path}></img>}
             {axPhotos && axPhotos.length !== 0 && <div className='flex border-b space-x-0'>
                 <div className="w-1/2 text-left">
                     {imgIndex !== 0 && 
