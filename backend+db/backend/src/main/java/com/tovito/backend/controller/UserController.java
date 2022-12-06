@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class UserController {
 //        }
 //    }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, value = "/getall")
     public ResponseEntity getAllUsers() {
         try {
             return ResponseEntity.ok(userService.findAllUsers());

@@ -44,6 +44,7 @@ public class WebSecurity {
         http
                 .authorizeHttpRequests((authorize) -> authorize
                         .antMatchers("/api/v1/auth/*").permitAll()
+                        .antMatchers("/api/v1/users/getall").hasRole("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .csrf().disable()
