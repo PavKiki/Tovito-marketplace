@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/photo")
+@RequestMapping("/api/v1/photo")
 public class PhotoController {
     @Autowired
     public PhotoService photoService;

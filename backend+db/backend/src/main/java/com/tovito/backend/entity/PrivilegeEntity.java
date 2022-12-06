@@ -1,6 +1,5 @@
 package com.tovito.backend.entity;
 
-import javax.management.relation.Role;
 import javax.persistence.*;
 import java.util.Collection;
 

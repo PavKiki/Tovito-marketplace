@@ -9,6 +9,8 @@ import com.tovito.backend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +31,14 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private PrivilegeRepo privilegeRepo;
 
-    /*add autowired password encoder if it will be )))*/
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
+    @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (alreadySetup || userRepo.findById(0L) != null) return;
+        if (alreadySetup) return;
 
         PrivilegeEntity viewPrivilege = createPrivilegeIfNotFound("VIEW_PRODUCT_PRIVILEGE");
         PrivilegeEntity createPrivilege = createPrivilegeIfNotFound("CREATE_PRODUCT_PRIVILEGE");
@@ -53,7 +57,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         RoleEntity adminRole = roleRepo.findByName("ROLE_ADMIN");
         UserEntity user = new UserEntity();
         user.setName("Pavel");
-        user.setPassword("12345678");
+        user.setPassword(passwordEncoder.encode("12345678"));
         user.setBalance(0.0);
         user.setFrozen_balance(0.0);
         user.setEmail("baka@gmail.com");

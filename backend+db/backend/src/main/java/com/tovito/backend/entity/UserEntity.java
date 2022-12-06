@@ -29,9 +29,6 @@ public class UserEntity {
     @Column(nullable = false)
     private Double frozen_balance;
 
-    @Column(nullable = false)
-    private boolean tokenExpired;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, orphanRemoval = true, mappedBy = "user")
     private Set<ProductEntity> products = new HashSet<>();
 
@@ -40,9 +37,9 @@ public class UserEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "Roles",
+            name = "users_roles",
             joinColumns = @JoinColumn(
-                    name = "user_id"),
+                    name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id")
             )
@@ -126,14 +123,6 @@ public class UserEntity {
 
     public void setFrozen_balance(Double frozen_balance) {
         this.frozen_balance = frozen_balance;
-    }
-
-    public boolean isTokenExpired() {
-        return tokenExpired;
-    }
-
-    public void setTokenExpired(boolean tokenExpired) {
-        this.tokenExpired = tokenExpired;
     }
 
     public Collection<RoleEntity> getRoles() {

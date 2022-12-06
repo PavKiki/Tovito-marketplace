@@ -16,8 +16,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -35,16 +33,17 @@ public class WebSecurity {
     JwtToUserConverter jwtToUserConverter;
     @Autowired
     KeyUtils keyUtils;
+
 //    @Autowired
 //    PasswordEncoder passwordEncoder;
 //    @Autowired
-//    UserDetailsManager userDetailsManager;
+//    CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .antMatchers("/api/auth/*").permitAll()
+                        .antMatchers("/api/v1/auth/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf().disable()
@@ -103,10 +102,6 @@ public class WebSecurity {
         return provider;
     }
 
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
 //    @Bean
 //    DaoAuthenticationProvider daoAuthenticationProvider() {
 //        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();

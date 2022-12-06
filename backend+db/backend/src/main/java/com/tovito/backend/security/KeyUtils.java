@@ -87,7 +87,7 @@ public class KeyUtils {
             }
         }
 
-        //если ключей нет, доходим до сюда и генерируем их
+        //если ключей нет, а мы в деве, то доходим до сюда и генерируем их
         File directory = new File("access-refresh-token-keys");
         if (!directory.exists()) {
             directory.mkdirs();
@@ -97,6 +97,7 @@ public class KeyUtils {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             keyPairGenerator.initialize(2048);
             keyPair = keyPairGenerator.generateKeyPair();
+
             try (FileOutputStream fos = new FileOutputStream(publicKeyPath)) {
                 EncodedKeySpec keySpec = new X509EncodedKeySpec(keyPair.getPublic().getEncoded());
                 fos.write(keySpec.getEncoded());
@@ -106,6 +107,7 @@ public class KeyUtils {
                 EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded());
                 fos.write(keySpec.getEncoded());
             }
+
         } catch (NoSuchAlgorithmException | IOException e) {
             throw new RuntimeException(e);
         }

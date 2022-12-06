@@ -48,7 +48,7 @@ public class TokenGenerator {
         JwtClaimsSet claimsSet = JwtClaimsSet.builder()
                 .issuer("TovitoApp")
                 .issuedAt(now)
-                .expiresAt(now.plus(90, ChronoUnit.SECONDS))
+                .expiresAt(now.plus(120, ChronoUnit.SECONDS))
                 .subject(String.valueOf(user.getUser_id()))
                 .build();
 
@@ -57,19 +57,19 @@ public class TokenGenerator {
 
     //не, это говно какое=то, по новой разобрать надо
     public TokenModel createToken(Authentication authentication) {
-        if (!(authentication.getPrincipal() instanceof UserEntity user)) {
+        if (!(authentication.getPrincipal() instanceof UserEntity user)) {  //implicit cast - неявное приведение
             throw new BadCredentialsException(
                     MessageFormat.format("principal {0} is not of UserEntity type", authentication.getPrincipal().getClass())
             );
         }
 
-        TokenModel tokenDTO = new TokenModel();
-        tokenDTO.setUserId(user.getUser_id());
-        tokenDTO.setAccessToken(createAccessToken(authentication));
+        TokenModel tokenModel = new TokenModel();
+        tokenModel.setUserId(user.getUser_id());
+        tokenModel.setAccessToken(createAccessToken(authentication));
 
         String refreshToken;
-        if (authentication.getCredentials() instanceof Jwt jwt) {       //разобраться почему НЕ ПАРОЛЬ хранится в jwt, точнее найти где я это делаю)))
-            Instant now = Instant.now();                                //какого лешего вообще название переменной указывается, как оно понимает че подтягивать
+        if (authentication.getCredentials() instanceof Jwt jwt) {           //implicit cast - неявное приведение
+            Instant now = Instant.now();
             Instant expiresAt = jwt.getExpiresAt();
             Duration duration = Duration.between(now, expiresAt);
             long secondsUntilExpired = duration.toSeconds();
@@ -81,8 +81,8 @@ public class TokenGenerator {
         } else {
             refreshToken = createRefreshToken(authentication);
         }
-        tokenDTO.setRefreshToken(refreshToken);
+        tokenModel.setRefreshToken(refreshToken);
 
-        return tokenDTO;
+        return tokenModel;
     }
 }

@@ -14,25 +14,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity register(@RequestBody UserSignUpModel user) {
-        try {
-            userService.register(user);
-            return ResponseEntity.ok("Пользователь успешно сохранен!");
-        }
-        catch (EmailAlreadyRegistered e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-        catch (Exception e) {
-            return  ResponseEntity.badRequest().body("Unknown error!");
-        }
-    }
+//    @RequestMapping(value = "/register", method = RequestMethod.POST)
+//    public ResponseEntity register(@RequestBody UserSignUpModel user) {
+//        try {
+//            userService.register(user);
+//            return ResponseEntity.ok("Пользователь успешно сохранен!");
+//        }
+//        catch (EmailAlreadyRegistered e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//        catch (Exception e) {
+//            return  ResponseEntity.badRequest().body("Unknown error!");
+//        }
+//    }
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getAllUsers() {
@@ -70,20 +70,20 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity loginUser(@RequestBody UserSignInModel userData) {
-        try {
-            userService.loginUser(userData);
-            return ResponseEntity.ok("Пользователь успешно вошел в систему!");
-        }
-        catch (UserNotFound e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-        catch (WrongPassword e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-        catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @RequestMapping(value = "/login", method = RequestMethod.POST)
+//    public ResponseEntity loginUser(@RequestBody UserSignInModel userData) {
+//        try {
+//            userService.loginUser(userData);
+//            return ResponseEntity.ok("Пользователь успешно вошел в систему!");
+//        }
+//        catch (UserNotFound e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//        catch (WrongPassword e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//        catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 }

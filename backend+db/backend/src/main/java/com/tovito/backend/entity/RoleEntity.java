@@ -19,6 +19,7 @@ public class RoleEntity {
 
     @ManyToMany
     @JoinTable(
+            name = "roles_privileges",
             joinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
