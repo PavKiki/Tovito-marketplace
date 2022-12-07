@@ -6,6 +6,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.tovito.backend.service.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,6 +17,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -34,17 +36,17 @@ public class WebSecurity {
     @Autowired
     KeyUtils keyUtils;
 
-//    @Autowired
-//    PasswordEncoder passwordEncoder;
-//    @Autowired
-//    CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
                         .antMatchers("/api/v1/auth/*").permitAll()
-                        .antMatchers("/api/v1/users/getall").hasRole("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .csrf().disable()
@@ -103,11 +105,11 @@ public class WebSecurity {
         return provider;
     }
 
-//    @Bean
-//    DaoAuthenticationProvider daoAuthenticationProvider() {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setPasswordEncoder(passwordEncoder);
-//        provider.setUserDetailsService(userDetailsManager);
-//        return provider;
-//    }
+    @Bean
+    DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(customUserDetailsService);
+        return provider;
+    }
 }

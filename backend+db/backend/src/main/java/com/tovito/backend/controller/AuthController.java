@@ -1,12 +1,14 @@
 package com.tovito.backend.controller;
 
 import com.tovito.backend.entity.UserEntity;
+import com.tovito.backend.model.UserSignInModel;
 import com.tovito.backend.model.UserSignUpModel;
 import com.tovito.backend.security.TokenGenerator;
 import com.tovito.backend.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,12 +26,21 @@ public class AuthController {
     @Autowired
     TokenGenerator tokenGenerator;
 
+    @Autowired
+    DaoAuthenticationProvider daoAuthenticationProvider;
+
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UserSignUpModel userSignUpModel) {
         UserEntity user = customUserDetailsService.createUser(userSignUpModel);
 
         //principal - сущность, credential - пароль
         Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(user, user.getPassword(), Collections.EMPTY_LIST);
+        return ResponseEntity.ok(tokenGenerator.createToken(authentication));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody UserSignInModel userSignInModel) {
+        Authentication authentication = daoAuthenticationProvider.authenticate(UsernamePasswordAuthenticationToken.unauthenticated(userSignInModel.getEmail(), userSignInModel.getPassword()));
         return ResponseEntity.ok(tokenGenerator.createToken(authentication));
     }
 }

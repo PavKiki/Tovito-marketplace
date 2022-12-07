@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -55,12 +56,11 @@ public class TokenGenerator {
         return refreshTokenEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
     }
 
-    //не, это говно какое=то, по новой разобрать надо
     public TokenModel createToken(Authentication authentication) {
         if (!(authentication.getPrincipal() instanceof UserEntity user)) {  //implicit cast - неявное приведение
-            throw new BadCredentialsException(
-                    MessageFormat.format("principal {0} is not of UserEntity type", authentication.getPrincipal().getClass())
-            );
+                throw new BadCredentialsException(
+                        MessageFormat.format("principal {0} is not of UserEntity or UserDetails type", authentication.getPrincipal().getClass())
+                );
         }
 
         TokenModel tokenModel = new TokenModel();
@@ -68,6 +68,7 @@ public class TokenGenerator {
         tokenModel.setAccessToken(createAccessToken(authentication));
 
         String refreshToken;
+        //разобрать когда заходим сюда
         if (authentication.getCredentials() instanceof Jwt jwt) {           //implicit cast - неявное приведение
             Instant now = Instant.now();
             Instant expiresAt = jwt.getExpiresAt();
