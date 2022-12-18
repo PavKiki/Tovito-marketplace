@@ -28,47 +28,45 @@ public class TokenGenerator {
     JwtEncoder refreshTokenEncoder;
 
     private String createAccessToken(Authentication authentication) {
-        //получаем пароль, но не совсем понятно как запихиваем в юзера
-        UserEntity user = (UserEntity) authentication.getPrincipal();
+        UserDetails user = (UserDetails) authentication.getPrincipal();
         Instant now = Instant.now();
 
         JwtClaimsSet claimsSet = JwtClaimsSet.builder()
                 .issuer("TovitoApp")
                 .issuedAt(now)
                 .expiresAt(now.plus(30, ChronoUnit.SECONDS))
-                .subject(String.valueOf(user.getUser_id()))     //эта штука идентифицирует пароль, т.е тут идентифицируем пароль по айди
+                .subject(user.getUsername())
                 .build();
 
         return accessTokenEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
     }
 
     private String createRefreshToken(Authentication authentication) {
-        UserEntity user = (UserEntity) authentication.getPrincipal();
+        UserDetails user = (UserDetails) authentication.getPrincipal();
         Instant now = Instant.now();
 
         JwtClaimsSet claimsSet = JwtClaimsSet.builder()
                 .issuer("TovitoApp")
                 .issuedAt(now)
                 .expiresAt(now.plus(120, ChronoUnit.SECONDS))
-                .subject(String.valueOf(user.getUser_id()))
+                .subject(user.getUsername())
                 .build();
 
         return refreshTokenEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
     }
 
     public TokenModel createToken(Authentication authentication) {
-        if (!(authentication.getPrincipal() instanceof UserEntity user)) {  //implicit cast - неявное приведение
+        if (!(authentication.getPrincipal() instanceof UserDetails user)) {  //implicit cast - неявное приведение
                 throw new BadCredentialsException(
-                        MessageFormat.format("principal {0} is not of UserEntity or UserDetails type", authentication.getPrincipal().getClass())
+                        MessageFormat.format("principal {0} is not of UserDetails type", authentication.getPrincipal().getClass())
                 );
         }
 
         TokenModel tokenModel = new TokenModel();
-        tokenModel.setUserId(user.getUser_id());
+        tokenModel.setUserEmail(user.getUsername());
         tokenModel.setAccessToken(createAccessToken(authentication));
 
         String refreshToken;
-        //разобрать когда заходим сюда
         if (authentication.getCredentials() instanceof Jwt jwt) {           //implicit cast - неявное приведение
             Instant now = Instant.now();
             Instant expiresAt = jwt.getExpiresAt();

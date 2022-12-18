@@ -1,25 +1,25 @@
 package com.tovito.backend.model;
 
 public class TokenModel {
-    private Long userId;
+    private String userEmail;
     private String accessToken;
     private String refreshToken;
 
     public TokenModel() {
     }
 
-    public TokenModel(Long userId, String accessToken, String refreshToken) {
-        this.userId = userId;
+    public TokenModel(String userEmail, String accessToken, String refreshToken) {
+        this.userEmail = userEmail;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getAccessToken() {

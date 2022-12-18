@@ -104,4 +104,12 @@ public class WebSecurity {
         provider.setJwtAuthenticationConverter(jwtToUserConverter);
         return provider;
     }
+
+    @Bean
+    DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(customUserDetailsService);
+        return provider;
+    }
 }

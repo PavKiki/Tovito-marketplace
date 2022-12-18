@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,9 +33,9 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UserSignUpModel userSignUpModel) {
         UserEntity user = customUserDetailsService.createUser(userSignUpModel);
-
-        //principal - сущность, credential - пароль
-        Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(user, user.getPassword(), Collections.EMPTY_LIST);
+        //principal - всё, credential - пароль
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
+        Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(userDetails, userSignUpModel.getPassword(), userDetails.getAuthorities());
         return ResponseEntity.ok(tokenGenerator.createToken(authentication));
     }
 
